@@ -23,12 +23,12 @@ guessButton.addEventListener("click", function(e){
 e.preventDefault();
 
 message.innerText="";
-const myGuess=guessLetter.value;
+const guess=guessLetter.value;
 
-const test=letterInput(myGuess);
+const valid=letterInput(guess);
 
-if(test) {
-    makeGuess(myGuess);
+if(valid) {
+    makeGuess(guess);
 }
 guessLetter.value="";
 });
@@ -55,5 +55,38 @@ const letterInput=function(input){
         }else{
             guessedLetters.push(myGuess);
             console.log(guessedLetters);
+            updateLetter();
+            updateWord(guessedLetters);
         }
     };
+
+    const updateLetter =function(){
+        guessedLettersElement.innerHTML="";
+        for (const letter of guessedLetters){
+            const li=document.createElement("li");
+            li.innerText=letter;
+            guessedLettersElement.append(li);
+        }
+    };
+
+    const updateWord=function(guessedLetters){
+        const wordUpper= word.toUpperCase();
+        const wordArray=wordUpper.split("");
+        const revealWord=[];
+        for(const letter of wordArray){
+         if(guessedLetters.includes(letter)){
+            revealWord.push(letter.toUpperCase());
+             }else{
+            revealWord.push("●");
+        }
+    }
+      // console.log(wordArray);
+       progressWord.innerText=revealWord.join("");
+       checkWon();
+    };
+const checkWon=function(){
+    if(word.toUpperCase()==progressWord.innerText){
+        message.classList.add("win");
+        message.innerHTML='<p class="highlight">You guessed correct the word! Congrats!</p>';
+    }
+};
