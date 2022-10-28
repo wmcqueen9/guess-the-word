@@ -2,12 +2,12 @@ const guessedLettersElement=document.querySelector(".guessed-letters");
 const guessButton=document.querySelector(".guess");
 const guessLetter=document.querySelector(".letter");
 const progressWord=document.querySelector(".word-in-progress");
-const remainingGuessElemwnt=document.querySelector(".remaining");
+const remainingGuessElement=document.querySelector(".remaining");
 const span=document.querySelector(".remaining span");
 const message=document.querySelector(".message");
-const hiddenButton=document.querySelector(".play-again");
+const playButton=document.querySelector(".play-again");
 let word="magonlia";
-const guessedLetters=[];
+let guessedLetters=[];
 let remainingGuesses = 8;
 
 const getWord= async function(){
@@ -24,7 +24,7 @@ getWord();
 const reveal=function(word){
     const revealletters=[]; // an array for the 8 circle symbols
     for(const letter of word){
-        console.log(letter)
+     console.log(letter)
         revealletters.push("●")
     }
     progressWord.innerText=revealletters.join("");
@@ -66,7 +66,7 @@ const letterInput=function(input){
           
         }else{
             guessedLetters.push(guess);
-            console.log(guessedLetters);
+          //  console.log(guessedLetters);
             guessCount(guess);
             updateLetter();
             updateWord(guessedLetters);
@@ -118,8 +118,27 @@ const letterInput=function(input){
     };
 
 const checkWon=function(){
-    if(word.toUpperCase()==progressWord.innerText){
+    if(word.toUpperCase()===progressWord.innerText){
         message.classList.add("win");
         message.innerHTML='<p class="highlight">You guessed correct the word! Congrats!</p>';
+        startOver();
     }
+
 };
+
+
+const startOver=function(){
+    guessButton.classList.add("hide");
+    remainingGuessElement.classList.add("hide");
+    guessedLettersElement.classList.add("hide");
+    playButton.classList.remove("hide");
+};
+playButton.addEventListener("click", function(){
+    message.classList.remove("win");
+   guessedLetters=[];
+   message.innerText="";
+   remainingGuesses=8;
+   span.innerText-`${remainingGuesses}guesses`;
+   guessedLettersElement.innnerHTML=""
+   getWord();
+});
